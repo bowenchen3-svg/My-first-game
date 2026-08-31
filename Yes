@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub Clicker</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+        h1 { color: #58a6ff; }
+        #counter { font-size: 2.5rem; margin: 20px; color: #3fb950; }
+        .btn {
+            background-color: #21262d;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 6px;
+            margin: 10px;
+            transition: 0.2s;
+        }
+        .btn:hover { background-color: #30363d; border-color: #8b949e; }
+        #click-btn {
+            font-size: 5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.1s;
+        }
+        #click-btn:active { transform: scale(0.9); }
+        .shop { margin-top: 30px; }
+        .upgrade { display: inline-block; margin: 10px; background: #161b22; padding: 15px; border-radius: 6px; border: 1px solid #30363d; }
+    </style>
+</head>
+<body>
+
+    <h1>GitHub Clicker 🐙</h1>
+    <p>Commit code to earn Pull Requests!</p>
+    
+    <div id="counter">0 PRs</div>
+    
+    <button id="click-btn" onclick="addCommit()">🐙</button>
+    
+    <div class="shop">
+        <h3>Upgrade Shop</h3>
+        <div class="upgrade">
+            <p>Junior Dev (+1 PR/s)</p>
+            <p id="cost-junior">Cost: 10 PRs</p>
+            <button class="btn" onclick="buyJunior()">Hire Junior</button>
+        </div>
+        <div class="upgrade">
+            <p>CI/CD Bot (+5 PR/s)</p>
+            <p id="cost-bot">Cost: 50 PRs</p>
+            <button class="btn" onclick="buyBot()">Deploy Bot</button>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let pps = 0; // PRs per second
+        let juniorCount = 0;
+        let botCount = 0;
+        
+        let costJunior = 10;
+        let costBot = 50;
+
+        function addCommit() {
+            score += 1;
+            updateDisplay();
+        }
+
+        function buyJunior() {
+            if (score >= costJunior) {
+                score -= costJunior;
+                juniorCount += 1;
+                pps += 1;
+                costJunior = Math.floor(costJunior * 1.5);
+                updateDisplay();
+            }
+        }
+
+        function buyBot() {
+            if (score >= costBot) {
+                score -= costBot;
+                botCount += 1;
+                pps += 5;
+                costBot = Math.floor(costBot * 1.5);
+                updateDisplay();
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById("counter").innerText = score + " PRs (" + pps + " /sec)";
+            document.getElementById("cost-junior").innerText = "Cost: " + costJunior + " PRs";
+            document.getElementById("cost-bot").innerText = "Cost: " + costBot + " PRs";
+        }
+
+        // Game loop for passive income
+        setInterval(function() {
+            score += pps / 10;
+            document.getElementById("counter").innerText = Math.floor(score) + " PRs (" + pps + " /sec)";
+        }, 100);
+    </script>
+</body>
+</html>
